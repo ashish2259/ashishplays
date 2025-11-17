@@ -1,0 +1,19 @@
+---
+- name: Create users using ansible vault in Jenkins
+  hosts: localhost
+  become: true
+
+  vars_files:
+    - userpass     # <-- your encrypted vault file inside Jenkins workspace
+
+  tasks:
+    - name: Create users with vault password
+      user:
+        name: "{{ item }}"
+        password: "{{ pass | password_hash('sha512') }}"
+        state: present
+        update_password: on_create
+      loop:
+        - rocky
+        - jocky
+        - micky
