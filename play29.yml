@@ -2,7 +2,7 @@
 - name: Demonstrate vars_prompt
   hosts: localhost
   become: true
-  remote_user: ansible
+  remote_user: jenkins
   vars_prompt:
    - prompt: "Enter your username"
      name: u_name
