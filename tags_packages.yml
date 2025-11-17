@@ -1,0 +1,16 @@
+---
+- name: Install required packages using Jenkins tags
+  hosts: localhost
+  become: true
+  remote_user: jenkins
+
+  vars:
+    pkgs_list: "{{ pkgs }}"
+
+  tasks:
+    - name: Install packages
+      yum:
+        name: "{{ pkgs_list }}"
+        state: present
+      tags:
+        - install
