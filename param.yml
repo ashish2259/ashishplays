@@ -1,0 +1,12 @@
+---
+- name: Create a user using Jenkins parameters
+  hosts: localhost
+  become: true
+  remote_user: jenkins
+
+  tasks:
+    - name: Create user
+      user:
+        name: "{{ u_name }}"
+        password: "{{ u_pass | password_hash('sha512') }}"
+        state: present
