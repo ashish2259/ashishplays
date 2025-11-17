@@ -1,0 +1,47 @@
+---
+- name: User management with tags
+  hosts: localhost
+  become: true
+  remote_user: jenkins
+
+  vars:
+    user_name: "{{ username }}"
+    user_pass: "{{ password }}"
+
+  tasks:
+
+    - name: Create user
+      user:
+        name: "{{ user_name }}"
+        state: present
+      tags: 
+        - create
+
+    - name: Delete user
+      user:
+        name: "{{ user_name }}"
+        state: absent
+        remove: yes
+      tags: 
+        - delete
+
+    - name: Set user password
+      user:
+        name: "{{ user_name }}"
+        password: "{{ user_pass | password_hash('sha512') }}"
+      tags: 
+        - password
+
+    - name: Add SSH key
+      authorized_key:
+        user: "{{ user_name }}"
+        key: "{{ lookup('file', '/home/jenkins/.ssh/id_rsa.pub') }}"
+      tags: 
+        - ssh
+
+    - name: Expire user immediately
+      user:
+        name: "{{ user_name }}"
+        expires: 0
+      tags: 
+        - expire
