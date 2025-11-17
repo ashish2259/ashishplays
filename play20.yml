@@ -6,12 +6,12 @@
   tasks:
    - name: Add a user
      user:
-       name: ashish
+       name: ashishones
        password: "{{ 'test123' | password_hash('sha512')}}"
        state: present
    - name: Task to add SSH keys to the user
      authorized_key:
-      user: ashish
+      user: ashishones
       state: present
       key: "{{lookup('file', '/home/jenkins/.ssh/id_rsa.pub')}}"
 ...
