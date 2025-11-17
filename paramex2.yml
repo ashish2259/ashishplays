@@ -1,0 +1,21 @@
+---
+- name: Play to demonstrate variables from Jenkins
+  hosts: localhost
+  become: true
+  remote_user: jenkins
+
+  vars:
+    user:
+      trainer:
+        first_name: "{{ trainer_first }}"
+        last_name: "{{ trainer_last }}"
+      student:
+        first_name: "{{ student_first }}"
+        last_name: "{{ student_last }}"
+
+  tasks:
+    - name: Print all values
+      debug:
+        msg: |
+          Trainer: {{ user.trainer.first_name }} {{ user.trainer.last_name }}
+          Student: {{ user.student.first_name }} {{ user.student.last_name }}

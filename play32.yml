@@ -2,7 +2,7 @@
 - name: Play to demonstrate variables
   hosts: localhost
   become: true
-  remote_user: ansible
+  remote_user: jenkins
   vars:
    user:
     trainer: 
