@@ -1,0 +1,32 @@
+---
+- name: Play to change PermitRootLogin to no on all managed nodes
+  hosts: all
+  remote_user: ec2-user
+  become: true
+
+  vars:
+    fname: /etc/ssh/sshd_config
+
+  tasks:
+    - name: Replace PermitRootLogin line
+      lineinfile:
+        path: "{{ fname }}"
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin no'
+        backup: yes
+      notify:
+        - Restart_SSH_RedHat
+        - Restart_SSH_Debian
+
+  handlers:
+    - name: Restart_SSH_RedHat
+      when: ansible_os_family == "RedHat"
+      service:
+        name: sshd
+        state: restarted
+
+    - name: Restart_SSH_Debian
+      when: ansible_os_family == "Debian"
+      service:
+        name: ssh
+        state: restarted
